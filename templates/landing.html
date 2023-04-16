@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<main id="main">
+
+    <section class="breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Welcome {{ current_user.username }}</h2>
+          <ol>
+            <li><a href="{{ url_for('settings', ID = current_user.ID) }}" class="btn btn-outline-primary"><i class="ri-shopping-cart-line"></i></a></li>
+            <li><a href="{{ url_for('settings', ID = current_user.ID) }}" class="btn btn-secondary">Account Settings</a></li>
+          </ol>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="inner-page">
+        <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
+            <div class="mx-auto pb-5">
+                <div class="text-center">
+                    <h1>Restaurants</h1>
+                    <h2>What are we craving today?</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="card mx-auto h-100" style="width: 18rem;">
+                        <img src="static/img/photos/2018-10-26T21-52-03.875Z_shawarma.jpg" style="object-fit:cover; height:200px;" class="card-img-top" alt="Sample Restaurant 1">
+                        <div class="card-header">
+                            <h5 class="card-title">Sample Restaurant 1</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Sample Address 1, Area 1</p>
+                            <a href="{{ url_for('menu') }}" class="btn btn-primary">Order Now!</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mx-auto h-100" style="width: 18rem;">
+                        <img src="static/img/photos/2018-10-29T11-24-44.190Z_Salad_platter.jpg" style="object-fit:cover; height:200px;" class="card-img-top" alt="Sample Restaurant 2">
+                        <div class="card-header">
+                            <h5 class="card-title">Sample Restaurant 1</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Sample Address 2, Area 2</p>
+                            <a href="{{ url_for('menu') }}" class="btn btn-outline-secondary disabled">Order Now!</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mx-auto h-100" style="width: 18rem;">
+                        <img src="static/img/photos/2023-03-27T22-51-40.602Z_meatpie.jpg" style="object-fit:cover; height:200px;" class="card-img-top" alt="Sample Restaurant 2">
+                        <div class="card-header">
+                            <h5 class="card-title">Sample Restaurant 3</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Sample Address 3, Area 3</p>
+                            <a href="{{ url_for('menu') }}" class="btn btn-outline-secondary disabled">Order Now!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  </main>
+
+{% endblock %}

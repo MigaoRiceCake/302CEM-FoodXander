@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<section id="banner" class="d-flex align-items-center">
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+        
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
+        <div class="row justify-content-center">
+            <div class="col-xl-7 col-lg-9 text-center">
+                <h1>Register Now!</h1>
+                <br/>
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    {{ form.username.label(class="form-label") }}
+                    {{ form.username(class="form-control") }}
+                    <br/>
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control") }}
+                    <br/>
+                    {{ form.phone.label(class="form-label") }}
+                    {{ form.phone(class="form-control") }}
+                    <br/>
+                    {{ form.address.label(class="form-label") }}
+                    {{ form.address(class="form-control") }}
+                    <br/>
+                    {{ form.submit(class="btn btn-secondary") }}
+                    <a href="{{ url_for('login') }}" class="btn btn-primary">Alternatively, Login</a>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

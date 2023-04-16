@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<main id="main">
+
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Account Settings</h2>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="inner-page">
+        <div class="container">
+
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
+            {% if ID == current_user.ID %}
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control") }}
+                <br/>
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+                <br/>
+                {{ form.phone.label(class="form-label") }}
+                {{ form.phone(class="form-control") }}
+                <br/>
+                {{ form.address.label(class="form-label") }}
+                {{ form.address(class="form-control") }}
+                <br/>
+                {{ form.submit(class="btn btn-primary", value="Update") }}
+                <a href="{{ url_for('delete', ID = current_user.ID) }}" class="btn btn-danger">Delete Account</a>
+            </form>
+
+            {% else %}
+
+                <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                    Permission Denied: User Does Not Have Permission To Append Target User Settings!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+            {% endif %}
+
+        </div>
+    </section>
+
+</main>
+
+{% endblock %}

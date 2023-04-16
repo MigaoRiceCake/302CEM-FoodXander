@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<main id="main">
+
+    <section class="breadcrumbs">
+        <div class="container">
+  
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Welcome {{ current_user.username }}</h2>
+                <ol>
+                    <li><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#shoppingCart"><i class="ri-shopping-cart-line"></i></button></li>
+                    <li><a href="{{ url_for('settings', ID = current_user.ID) }}" class="btn btn-secondary">Account Settings</a></li>
+                </ol>
+            </div>
+            
+            <div class="modal fade" id="shoppingCart" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-fullscreen-md-down modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="shoppingCartLabel">Your Cart</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-hover align-middle text-end">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-start">Name</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Unit Price</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    {% if session['cart_item'] != {} %}
+                                        {% for key, val in session['cart_item'].items() %}
+                                            {% set quantity = session['cart_item'][key]['quantity'] %}
+                                            {% set price = session['cart_item'][key]['price'] %}
+                                            {% set item_price = session['cart_item'][key]['t_price'] %}					
+                                            <tr>
+                                                <td class="text-start">{{ session['cart_item'][key]['name'] }}</td>
+                                                <td>{{ quantity }}</td>
+                                                <td>${{ price }}</td>
+                                                <td>${{ item_price }}</td>
+                                                <td class="text-center"><a href="{{ url_for('.remove_item', code=session['cart_item'][key]['code']) }}"><i class="ri-delete-bin-5-line"></i></a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else: %}
+                                        <tr>
+                                            <td colspan="5" class="text-center">Your Cart is Empty</td> 
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th class="text-end">Total:</td>
+                                        <td class="text-end">{{ session['all_total_quantity'] }}</td>
+                                        <td colspan="2" class="text-end"><strong>${{ session['all_total_price'] }}</strong></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-outline-danger" href="{{ url_for('.empty_cart') }}" role="button">Empty Cart</a>
+                                <a class="btn btn-primary" href="{{ url_for('.order') }}" role="button">Submit Order</a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="inner-page">
+        <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
+            <div class="mx-auto pb-5">
+                <div class="text-center">
+                    <h1>Sample Restaurant 1</h1>
+                    <h2>Here's the menu for today</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card h-100" style="width: 18rem;">
+                        <img src="static/img/photos/2018-10-26T21-52-03.875Z_shawarma.jpg" style="object-fit:cover; height:200px;" class="card-img-top" alt="Burrito">
+                        <div class="card-body">
+                            <h5 class="card-title">Burrito</h5>
+                            <h6 class="card-subtitle text-body-secondary text-end">$30.00</h6>
+                        </div>
+                        <div class="card-footer">
+                            <form method="post" action="/add">
+                                <div class="btn-toolbar justify-content-between" role="toolbar">
+                                    <div class="input-group">
+                                        <input type="hidden" name="code" value="1">
+                                        <input type="number" class="form-control form-control-sm" name="quantity" value="1" min="1">
+                                        <input type="submit" class="btn btn-outline-primary btn-sm" value="Add To Cart">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100" style="width: 18rem;">
+                        <img src="static/img/photos/2018-10-25T05-17-50.981Z_smoothie.jpg" style="object-fit:cover; height:200px;" class="card-img-top" alt="Smoothie">
+                        <div class="card-body">
+                            <h5 class="card-title">Smoothie</h5>
+                            <h6 class="card-subtitle text-body-secondary text-end">$18.00</h6>
+                        </div>
+                        <div class="card-footer">
+                            <form method="post" action="/add">
+                                <div class="btn-toolbar justify-content-between" role="toolbar">
+                                    <div class="input-group">
+                                        <input type="hidden" name="code" value="2">
+                                        <input type="number" class="form-control form-control-sm" name="quantity" value="1" min="1">
+                                        <input type="submit" class="btn btn-outline-primary btn-sm" value="Add To Cart">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100" style="width: 18rem;">
+                        <img src="static/img/photos/2018-10-30T22-48-20.356Z_steamed-corn-on-the-cob.jpeg" style="object-fit:cover; height:200px;" class="card-img-top" alt="Corn on The Cob">
+                        <div class="card-body">
+                            <h5 class="card-title">Corn on the Cob</h5>
+                            <h6 class="card-subtitle text-body-secondary text-end">$6.50</h6>
+                        </div>
+                        <div class="card-footer">
+                            <form method="post" action="/add">
+                                <div class="btn-toolbar justify-content-between" role="toolbar">
+                                    <div class="input-group">
+                                        <input type="hidden" name="code" value="3">
+                                        <input type="number" class="form-control form-control-sm" name="quantity" value="1" min="1">
+                                        <input type="submit" class="btn btn-outline-primary btn-sm" value="Add To Cart">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  </main>
+
+{% endblock %}

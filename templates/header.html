@@ -1,0 +1,20 @@
+<div class="container d-flex align-items-center justify-content-between">
+
+  {% if current_user.is_authenticated %}
+  <h1 class="logo"><a href="{{ url_for('home') }}">FoodXander</a></h1>
+  {% else %}
+  <h1 class="logo"><a href="{{ url_for('index') }}">FoodXander</a></h1>
+  {% endif %}
+
+  <nav id="navbar" class="navbar">
+    <ul>
+      {% if current_user.is_authenticated %}
+        <li><a class="register scrollto" href="{{ url_for('logout') }}">Logout</a></li>
+      {% else %}
+        <li><a class="register scrollto" href="{{ url_for('register') }}">Register/Log-in</a></li>
+      {% endif %}
+    </ul>
+    <!-- <i class="bi bi-list mobile-nav-toggle"></i> -->
+  </nav>
+
+</div>

@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <!-- <meta http-equiv="refresh" content="5"> -->
+{% endblock %}
+
+{% block body %}
+
+<main id="main">
+
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Sample Restaurant 1 Interface Page</h2>
+                <ol>
+                    <li><button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#history">Order History</button></li>
+                </ol>
+            </div>
+
+            <div class="modal fade" id="history" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-fullscreen-md-down modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="historyLabel">Order History</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row row-cols-1 row-cols-md-3 g-4">
+                                {% for key, val in compList.items() %}	
+                                    <div class="col">		
+                                        <div class="card">
+                                            <div class="card-header">
+                                                Status: <span class="text-capitalize">{{ compList[key]['status'] }}</span>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title">Order number #{{ key }}</h5>
+                                                <h6 class="card-subtitle mb-2 text-body-secondary">From user: {{ compList[key]['user'] }}</h6>
+                                                <table class="table table-hover text-end">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" class="text-start">Item</th>
+                                                            <th scope="col">Quantity</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-group-divider">
+                                                        {% for k, v in compList[key]['items'].items() %}
+                                                            <tr>
+                                                                <td class="text-start">{{ compList[key]['items'][k]['name'] }}</td>
+                                                                <td>x {{ compList[key]['items'][k]['quantity'] }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td>Total:</td>
+                                                            <td>${{ compList[key]['total'] }}</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                                <div class="d-flex justify-content-end">
+                                                    <div class="btn-group" role="group">
+                                                        <a href="{{ url_for('.pending_order', code=key) }}" class="btn btn-secondary">Uncomplete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <small class="text-body-secondary">Order submitted: {{ compList[key]['date'] }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#cancelled">View Cancelled</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="cancelled" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-fullscreen-md-down modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="cancelledLabel">Cancelled History</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row row-cols-1 row-cols-md-3 g-4">
+                                {% for key, val in cancList.items() %}	
+                                    <div class="col">		
+                                        <div class="card">
+                                            <div class="card-header">
+                                                Status: <span class="text-capitalize">{{ cancList[key]['status'] }}</span>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title">Order number #{{ key }}</h5>
+                                                <h6 class="card-subtitle mb-2 text-body-secondary">From user: {{ cancList[key]['user'] }}</h6>
+                                                <table class="table table-hover text-end">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" class="text-start">Item</th>
+                                                            <th scope="col">Quantity</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-group-divider">
+                                                        {% for k, v in cancList[key]['items'].items() %}
+                                                            <tr>
+                                                                <td class="text-start">{{ cancList[key]['items'][k]['name'] }}</td>
+                                                                <td>x {{ cancList[key]['items'][k]['quantity'] }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td>Total:</td>
+                                                            <td>${{ cancList[key]['total'] }}</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                                <div class="d-flex justify-content-end">
+                                                    <div class="btn-group" role="group">
+                                                        <a href="{{ url_for('.pending_order', code=key) }}" class="btn btn-secondary">Uncancel</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <small class="text-body-secondary">Order submitted: {{ cancList[key]['date'] }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#history">Order History</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="inner-page">
+      <div class="container">
+
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
+        <div class="row row-cols-1 row-cols-md-4 g-1">
+            {% for key, val in pendList.items() %}	
+                <div class="col">		
+                    <div class="card">
+                        <div class="card-header">
+                            Status: <span class="text-capitalize">{{ pendList[key]['status'] }}</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Order number #{{ key }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">From user: {{ pendList[key]['user'] }}</h6>
+                            <table class="table table-hover text-end">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-start">Item</th>
+                                        <th scope="col">Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    {% for k, v in pendList[key]['items'].items() %}
+                                        <tr>
+                                            <td class="text-start">{{ pendList[key]['items'][k]['name'] }}</td>
+                                            <td>x {{ pendList[key]['items'][k]['quantity'] }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>Total:</td>
+                                        <td>${{ pendList[key]['total'] }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="d-flex justify-content-end">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('.cancel_order', code=key) }}" class="btn btn-warning">Cancel</a>
+                                    <a href="{{ url_for('.complete_order', code=key) }}" class="btn btn-success">Complete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-body-secondary">Order submitted: {{ pendList[key]['date'] }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+  </main>
+
+{% endblock %}
